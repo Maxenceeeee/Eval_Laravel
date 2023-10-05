@@ -2,20 +2,20 @@
 
 namespace Database\Seeders;
 
-use App\Models\compagnies;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Compagnies;
+
 
 class CompagniesSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
-        compagnies::factory()
-            ->count(10)
-            ->create();
+        Compagnies::factory()
+        ->count(10)
+        ->create();
     }
 }

@@ -2,25 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\vols;
+use App\Models\Vols;
 use Illuminate\Http\Request;
 
 class VolsController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        // $nb_vols = Vols::select('id', 'date_depart')->get() ->groupBy(function($date) {
+
+        //     return Vols::parse($date->date_depart)->format('m');
+        // });
+        return view('tableau');
     }
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function create()
     {
@@ -29,9 +29,6 @@ class VolsController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
@@ -40,45 +37,42 @@ class VolsController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param  \App\Models\vols  $vols
-     * @return \Illuminate\Http\Response
      */
-    public function show(vols $vols)
+    public function show(Vols $vols)
     {
-        //
+        //return view('list');
+        //$data = Vols::orderBy('date_depart', 'desc')->get();
+
+        $data = Vols::
+        orderBy('date_depart', 'desc')
+        ->orderBy('heure_depart', 'desc')
+        ->get();
+
+
+        //$data = Vols::all();
+        return view('list',['vols'=>$data]);
     }
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\vols  $vols
-     * @return \Illuminate\Http\Response
      */
-    public function edit(vols $vols)
+    public function edit(Vols $vols)
     {
         //
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\vols  $vols
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, vols $vols)
+    public function update(Request $request, Vols $vols)
     {
         //
     }
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\vols  $vols
-     * @return \Illuminate\Http\Response
      */
-    public function destroy(vols $vols)
+    public function destroy(Vols $vols)
     {
         //
     }

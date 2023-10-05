@@ -2,20 +2,19 @@
 
 namespace Database\Seeders;
 
-use App\Models\vols;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Vols;
 
 class VolsSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
-        vols::factory()
-            ->count(10)
-            ->create();
+        Vols::factory()
+        ->count(10)
+        ->create();
     }
 }

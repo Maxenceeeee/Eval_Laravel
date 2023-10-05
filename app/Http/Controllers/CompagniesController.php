@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\compagnies;
+use App\Models\Compagnies;
 use Illuminate\Http\Request;
 
 class CompagniesController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
@@ -19,8 +17,6 @@ class CompagniesController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function create()
     {
@@ -29,9 +25,6 @@ class CompagniesController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
@@ -40,45 +33,32 @@ class CompagniesController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param  \App\Models\compagnies  $compagnies
-     * @return \Illuminate\Http\Response
      */
-    public function show(compagnies $compagnies)
+    public function show(Compagnies $compagnies)
     {
         //
     }
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\compagnies  $compagnies
-     * @return \Illuminate\Http\Response
      */
-    public function edit(compagnies $compagnies)
+    public function edit(Compagnies $compagnies)
     {
         //
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\compagnies  $compagnies
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, compagnies $compagnies)
+    public function update(Request $request, Compagnies $compagnies)
     {
         //
     }
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\compagnies  $compagnies
-     * @return \Illuminate\Http\Response
      */
-    public function destroy(compagnies $compagnies)
+    public function destroy(Compagnies $compagnies)
     {
         //
     }

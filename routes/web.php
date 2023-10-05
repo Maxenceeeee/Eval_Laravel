@@ -1,25 +1,24 @@
 <?php
 
-use App\Models\aeroports;
-use App\Models\compagnies;
-use App\Models\vols;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\VolsController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
 |
 | Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
 |
 */
 
-Route::get('/', function () {
+
+Route::get('/welcome', function () {
     return view('welcome');
 });
 
-Route::resource('vols', volsController::class);
-Route::resource('aeroports', aeroportsController::class);
-Route::resource('compagnies', compagniesController::class);
+
+Route::get('/', [VolsController::class, 'show']);
+
+Route::get('/tableau', [VolsController::class, 'index']);

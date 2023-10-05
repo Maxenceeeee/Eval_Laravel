@@ -2,29 +2,33 @@
 
 namespace Database\Factories;
 
-use App\Models\aeroports;
-use App\Models\compagnies;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Aeroports;
+use App\Models\Compagnies;
 
+
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Vols>
+ */
 class VolsFactory extends Factory
 {
     /**
      * Define the model's default state.
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         return [
-            'numero_vol' => $this->faker->integer,
-            'date_depart' => $this->faker->date(),
-            'heure_depart' => $this->faker->integer,
-            'date_arrive' => $this->faker->date(),
-            'heure_arrive' => $this->faker->integer,
-            'compagnie' => compagnies::factory()->create(),
-            'aeroport-depart' => aeroports::factory()->create(),
-            'aeroport_arrive' => aeroports::factory()->create()
-
+            'numero' => random_int(999,9999),
+            'compagnies_id' => Compagnies::factory()->create(),
+            'date_depart' => fake()->date,
+            'date_arivee' => fake()->date,
+            'heure_arivee' => fake()->time,
+            'heure_depart' => fake()->time,
+            'nombre_place' => random_int(50,999),
+            'aeroport_id_depart' => Aeroports::factory()->create(),
+            'aeroport_id_arivee' => Aeroports::factory()->create(),
         ];
     }
 }

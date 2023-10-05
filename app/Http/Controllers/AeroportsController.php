@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\aeroports;
+use App\Models\Aeroports;
 use Illuminate\Http\Request;
 
 class AeroportsController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
@@ -19,8 +17,6 @@ class AeroportsController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function create()
     {
@@ -29,9 +25,6 @@ class AeroportsController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
@@ -40,45 +33,32 @@ class AeroportsController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param  \App\Models\aeroports  $aeroports
-     * @return \Illuminate\Http\Response
      */
-    public function show(aeroports $aeroports)
+    public function show(Aeroports $aeroports)
     {
         //
     }
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\aeroports  $aeroports
-     * @return \Illuminate\Http\Response
      */
-    public function edit(aeroports $aeroports)
+    public function edit(Aeroports $aeroports)
     {
         //
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\aeroports  $aeroports
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, aeroports $aeroports)
+    public function update(Request $request, Aeroports $aeroports)
     {
         //
     }
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\aeroports  $aeroports
-     * @return \Illuminate\Http\Response
      */
-    public function destroy(aeroports $aeroports)
+    public function destroy(Aeroports $aeroports)
     {
         //
     }
