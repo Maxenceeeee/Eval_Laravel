@@ -12,7 +12,8 @@ class AeroportsController extends Controller
      */
     public function index()
     {
-        //
+        $aeroports = Aeroports::all();
+        return view('aeroports.index', ['aeroports' => $aeroports]);
     }
 
     /**
@@ -20,7 +21,7 @@ class AeroportsController extends Controller
      */
     public function create()
     {
-        //
+        return view('aeroports.create');
     }
 
     /**
@@ -28,7 +29,15 @@ class AeroportsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'nom_aeroport' =>'required',
+            'ville_aeroport' =>'required',
+            'code' =>'required|integer',
+            'nombre_piste' =>'required|integer'
+        ]);
+
+        $newAeroport = Aeroports::create($data);
+        return redirect(route('aeroports.index'));
     }
 
     /**
@@ -44,7 +53,7 @@ class AeroportsController extends Controller
      */
     public function edit(Aeroports $aeroports)
     {
-        //
+        return view('aeroports.edit', ['aeroports' => $aeroports]);
     }
 
     /**
@@ -52,7 +61,15 @@ class AeroportsController extends Controller
      */
     public function update(Request $request, Aeroports $aeroports)
     {
-        //
+        $data = $request->validate([
+            'nom_aeroport' =>'required',
+            'ville_aeroport' =>'required',
+            'code' =>'required|integer',
+            'nombre_piste' =>'required|integer'
+        ]);
+
+        $aeroports->update($data);
+        return redirect(route('aeroports.index'))->with('success', 'Aeroport édité avec succès');
     }
 
     /**
@@ -60,6 +77,7 @@ class AeroportsController extends Controller
      */
     public function destroy(Aeroports $aeroports)
     {
-        //
+        $aeroports->delete();
+        return redirect(route('aeroports.index'))->with('success', 'Aeroport supprimé avec succès');
     }
 }
