@@ -4,16 +4,36 @@ namespace App\Http\Controllers;
 
 use App\Models\Aeroports;
 use Illuminate\Http\Request;
+use Silber\Bouncer\Bouncer;
+use Illuminate\Support\Facades\Gate;
+use App\Http\Requests\AeroportsRequest;
+use App\Repositories\AeroportRepository;
 
 class AeroportsController extends Controller
 {
+
+    private $repository;
+
+    public function __construct(AeroportRepository $repository){
+        $this->repository = $repository;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+
+
         $aeroports = Aeroports::all();
-        return view('aeroports.index', ['aeroports' => $aeroports]);
+        if (Gate::allows('access-aeroport')) {
+            $aeroports = Aeroports::all();
+            return view('aeroports.index', ['aeroports' => $aeroports]);
+
+        } else {
+            abort(403, 'Accès refusé car vôtre compte n a pas le rôle Admin');
+            
+        }
     }
 
     /**
@@ -29,14 +49,11 @@ class AeroportsController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'nom_aeroport' =>'required',
-            'ville_aeroport' =>'required',
-            'code' =>'required|integer',
-            'nombre_piste' =>'required|integer'
-        ]);
 
-        $newAeroport = Aeroports::create($data);
+        $data = $request->all();
+
+        //$newAeroport = Aeroports::create($data);
+        $aeroports = $this->repository->store($request->all());
         return redirect(route('aeroports.index'));
     }
 
@@ -61,14 +78,12 @@ class AeroportsController extends Controller
      */
     public function update(Request $request, Aeroports $aeroports)
     {
-        $data = $request->validate([
-            'nom_aeroport' =>'required',
-            'ville_aeroport' =>'required',
-            'code' =>'required|integer',
-            'nombre_piste' =>'required|integer'
-        ]);
 
-        $aeroports->update($data);
+        $data = $request->all();
+
+        //$aeroports->update($data);
+        $this->repository->update($aeroports, $request->all());
+
         return redirect(route('aeroports.index'))->with('success', 'Aeroport édité avec succès');
     }
 
@@ -78,6 +93,7 @@ class AeroportsController extends Controller
     public function destroy(Aeroports $aeroports)
     {
         $aeroports->delete();
+
         return redirect(route('aeroports.index'))->with('success', 'Aeroport supprimé avec succès');
     }
 }

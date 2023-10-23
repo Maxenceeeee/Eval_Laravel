@@ -4,16 +4,38 @@ namespace App\Http\Controllers;
 
 use App\Models\Compagnies;
 use Illuminate\Http\Request;
+use Silber\Bouncer\Bouncer;
+use Illuminate\Support\Facades\Gate;
+use App\Http\Requests\CompagniesRequest;
+use App\Repositories\CompagnieRepository;
+
 
 class CompagniesController extends Controller
 {
+
+    private $repository;
+
+    public function __construct(CompagnieRepository $repository){
+        $this->repository = $repository;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $compagnies = Compagnies::all();
-        return view('compagnies.index', ['compagnies' => $compagnies]);
+        
+
+        $vols = Compagnies::all();
+        if (Gate::allows('access-compagnie')) {
+            $compagnies = Compagnies::all();
+            return view('compagnies.index', ['compagnies' => $compagnies]);
+
+        } else {
+            abort(403, 'Accès refusé car vôtre compte n a pas le rôle Compagnie');
+
+        }
+
     }
 
     /**
@@ -29,12 +51,12 @@ class CompagniesController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'nom_compagnie' =>'required|alpha_dash:ascii',
-            'pays' =>'required|alpha_dash:ascii'
-        ]);
 
-        $newCompany = Compagnies::create($data);
+        $data = $request->all();
+
+        //$newCompany = Compagnies::create($data);
+        $compagnies = $this->repository->store($request->all());
+
         return redirect(route('compagnies.index'));
     }
 
@@ -59,12 +81,12 @@ class CompagniesController extends Controller
      */
     public function update(Request $request, Compagnies $compagnies)
     {
-        $data = $request->validate([
-            'nom_compagnie' =>'required|alpha_dash:ascii',
-            'pays' =>'required|alpha_dash:ascii'
-        ]);
 
-        $compagnies->update($data);
+        $data = $request->all();
+
+        //$compagnies->update($data);
+        $this->repository->update($compagnies, $request->all());
+
         return redirect(route('compagnies.index'))->with('success', 'Compagnie édité avec succès');
     }
 
@@ -74,6 +96,7 @@ class CompagniesController extends Controller
     public function destroy(Compagnies $compagnies)
     {
         $compagnies->delete();
+
         return redirect(route('compagnies.index'))->with('success', 'Compagnie supprimé avec succès');
     }
 }

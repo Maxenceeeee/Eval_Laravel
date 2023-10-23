@@ -4,21 +4,38 @@ namespace App\Http\Controllers;
 
 use App\Models\Vols;
 use Illuminate\Http\Request;
+use Silber\Bouncer\Bouncer;
+use Illuminate\Support\Facades\Gate;
+use App\Http\Requests\VolsRequest;
+use App\Models\Compagnies;
+use App\Models\Aeroports;
+use App\Repositories\VolsRepository;
+
 
 class VolsController extends Controller
 {
+
+    // private $repository;
+
+    // public function __construct(VolsRepository $repository){
+    //     $this->repository = $repository;
+    // }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        // $nb_vols = Vols::select('id', 'date_depart')->get() ->groupBy(function($date) {
 
-        //     return Vols::parse($date->date_depart)->format('m');
-        // });
-        //return view('tableau');
         $vols = Vols::all();
-        return view('vols.index', ['vols' => $vols]);
+        if (Gate::allows('access-vols')) {
+            return view('vols.index', ['vols' => $vols]);
+
+        } else {
+            abort(403, 'Accès refusé car vôtre compte n a pas le rôle Compagnie');
+            
+        }
+
     }
 
     /**
@@ -26,7 +43,10 @@ class VolsController extends Controller
      */
     public function create()
     {
-        return view('vols.create');
+
+        $vols = Vols::all();
+            return view('vols.create');
+
     }
 
     /**
@@ -34,17 +54,24 @@ class VolsController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'numero' =>'required|integer',
-            'date_depart' =>'required|date|',
-            'date_arivee' =>'required|date|after:date_depart',
-            'heure_depart' =>'required|date_format:H:i:s',
-            'heure_arivee' =>'required|date_format:H:i:s|after:heure_depart',
-            'nombre_place' =>'required|integer'
-        ]);
+   
+        // Obtenir une compagnie aléatoire
+        $compagnieAleatoire = Compagnies::inRandomOrder()->first();
+        $AeroportDepartAleatoire = Aeroports::inRandomOrder()->first();
+        $AeroportAriveAleatoire = Aeroports::inRandomOrder()->first();
+
+        $data = $request->all();
+
+        // Attribuer l'ID de la compagnie aléatoire
+        $data['compagnies_id'] = $compagnieAleatoire->id;
+        $data['aeroport_id_depart'] = $AeroportDepartAleatoire->id;
+        $data['aeroport_id_arivee'] = $AeroportAriveAleatoire->id;
 
         $newVol = Vols::create($data);
+        //$vols = $this->repository->store($request->all());
+
         return redirect(route('vols.index'));
+    
     }
 
     /**
@@ -52,8 +79,6 @@ class VolsController extends Controller
      */
     public function show(Vols $vols)
     {
-        //return view('list');
-        //$data = Vols::orderBy('date_depart', 'desc')->get();
 
         $data = Vols::
         orderBy('date_depart', 'desc')
@@ -62,12 +87,6 @@ class VolsController extends Controller
 
         return view('list',['vols'=>$data]);
 
-        // $count = Vols::selectRaw('MONTH(date_depart) as month, COUNT(*) as flight_count')
-        // ->groupBy('month')
-        // ->orderBy('month')
-        // ->get();
-
-        // return view('list', compact('count'));
     }
 
     /**
@@ -75,6 +94,7 @@ class VolsController extends Controller
      */
     public function edit(Vols $vols)
     {
+
         return view('vols.edit', ['vols' => $vols]);
     }
 
@@ -83,17 +103,14 @@ class VolsController extends Controller
      */
     public function update(Request $request, Vols $vols)
     {
-        $data = $request->validate([
-            'numero' =>'required|integer',
-            'date_depart' =>'required|date|',
-            'date_arivee' =>'required|date|after:date_depart',
-            'heure_depart' =>'required|date_format:H:i:s',
-            'heure_arivee' =>'required|date_format:H:i:s|after:heure_depart',
-            'nombre_place' =>'required|integer'
-        ]);
+
+        $data = $request->all();
 
         $vols->update($data);
+        //$this->repository->update($vols, $request->all());
+
         return redirect(route('vols.index'))->with('success', 'Vol édité avec succès');
+        
     }
 
     /**
@@ -103,6 +120,7 @@ class VolsController extends Controller
     {
         $vols->delete();
         return redirect(route('vols.index'))->with('success', 'Vol supprimé avec succès');
+
     }
 
 }

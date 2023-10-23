@@ -36,7 +36,7 @@
             <br>
 
             <div>
-                <label>Date d'arrivée du vol &nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <label>Date d'arrivé du vol &nbsp;&nbsp;&nbsp;&nbsp;</label>
                 <input type="text" name="date_arivee" placeholder="Date arrivée" />
             </div>
             <br>
@@ -46,7 +46,7 @@
                 <input type="text" name="heure_depart" placeholder="Heure Départ" />
             </div>
                 <br>
-
+            
             <div>
                 <label>Heure d'arrivée du vol &nbsp;&nbsp;&nbsp;&nbsp;</label>
                 <input type="text" name="heure_arivee" placeholder="Heure arrivée" />
